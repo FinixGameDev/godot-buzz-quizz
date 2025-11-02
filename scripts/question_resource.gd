@@ -1,12 +1,12 @@
 extends Resource
 class_name Question
 
-var question : String
-var image : Texture2D
+@export var question : String
+@export var image : Texture2D
 
-var answerA : String
-var answerB : String
-var answerC : String
-var answerD : String
+@export var answerA : String
+@export var answerB : String
+@export var answerC : String
+@export var answerD : String
 
-var correctIndex : int
+@export var correctIndex : int

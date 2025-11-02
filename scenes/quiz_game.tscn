@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://dam5bjpfpp36u"]
+[gd_scene load_steps=5 format=3 uid="uid://dam5bjpfpp36u"]
+
+[ext_resource type="Theme" uid="uid://wovb1idfe760" path="res://resources/theme.tres" id="1_ax7w2"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sqhfu"]
+width = 100
+height = 100
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r70e5"]
+width = 911
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r70e5"]
 
 [node name="QuizGame" type="Control"]
 layout_mode = 3
@@ -9,9 +18,123 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_ax7w2")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Timer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Timer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Timer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Timer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_sqhfu")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Timer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "00:00"
+
+[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer/Timer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Timer" type="Timer" parent="MarginContainer/VBoxContainer/Timer/MarginContainer/HBoxContainer"]
+wait_time = 30.0
+
+[node name="Banner" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Banner"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Question Banner" type="TextureRect" parent="MarginContainer/VBoxContainer/Banner/MarginContainer"]
+layout_mode = 2
 texture = SubResource("NoiseTexture2D_r70e5")
+stretch_mode = 5
+
+[node name="Answers" type="GridContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 2
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/Answers"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Answer A"
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/Answers"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Answer A"
+
+[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/Answers"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Answer C"
+
+[node name="Button4" type="Button" parent="MarginContainer/VBoxContainer/Answers"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Answer D"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+theme_override_styles/separator = SubResource("StyleBoxEmpty_r70e5")
+
+[node name="Players" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/Players"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player 1"
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/Players"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player 2"
+
+[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/Players"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player 3"
+
+[node name="Button4" type="Button" parent="MarginContainer/VBoxContainer/Players"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player 4"
