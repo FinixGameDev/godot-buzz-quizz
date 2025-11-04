@@ -1,11 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://dam5bjpfpp36u"]
+[gd_scene load_steps=16 format=3 uid="uid://dam5bjpfpp36u"]
 
 [ext_resource type="Theme" uid="uid://wovb1idfe760" path="res://resources/theme.tres" id="1_ax7w2"]
 [ext_resource type="Script" uid="uid://bk57erkplxhx7" path="res://scripts/timer.gd" id="2_lb0yd"]
 [ext_resource type="Script" uid="uid://cy8qek1wallrd" path="res://scripts/quiz_game_controller.gd" id="2_mwbmr"]
 [ext_resource type="Texture2D" uid="uid://dxgbjbnfistfx" path="res://resources/sprites/background.tres" id="2_txix1"]
+[ext_resource type="Resource" uid="uid://j1wn611o2ydt" path="res://resources/quizzes/test_quiz/test_quiz.tres" id="3_o4cxn"]
 [ext_resource type="Texture2D" uid="uid://dltq1ynbvok8v" path="res://resources/sprites/time.png" id="3_txix1"]
 [ext_resource type="Texture2D" uid="uid://cyi2gfcdb4x82" path="res://resources/sprites/button.png" id="6_ax1xd"]
+[ext_resource type="Script" uid="uid://c0lug5cuojnuf" path="res://scripts/popup.gd" id="7_ax1xd"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r70e5"]
 width = 911
@@ -104,7 +106,7 @@ _data = {
 &"pop_up": SubResource("Animation_mwbmr")
 }
 
-[node name="QuizGame" type="Control" node_paths=PackedStringArray("answer_buttons", "buzzer_buttons", "player_labels", "question_label", "question_banner", "timer")]
+[node name="QuizGame" type="Control" node_paths=PackedStringArray("answer_buttons", "buzzer_buttons", "player_labels", "answer_popup", "timeup_popup", "question_popup", "question_label", "question_banner", "timer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -116,6 +118,10 @@ script = ExtResource("2_mwbmr")
 answer_buttons = [NodePath("MarginContainer/VBoxContainer/Answers/Button"), NodePath("MarginContainer/VBoxContainer/Answers/Button2"), NodePath("MarginContainer/VBoxContainer/Answers/Button3"), NodePath("MarginContainer/VBoxContainer/Answers/Button4")]
 buzzer_buttons = [NodePath("MarginContainer/VBoxContainer/Players/Button"), NodePath("MarginContainer/VBoxContainer/Players/Button2"), NodePath("MarginContainer/VBoxContainer/Players/Button3"), NodePath("MarginContainer/VBoxContainer/Players/Button4")]
 player_labels = [NodePath("MarginContainer/VBoxContainer/PlayerScore/Button"), NodePath("MarginContainer/VBoxContainer/PlayerScore/Button2"), NodePath("MarginContainer/VBoxContainer/PlayerScore/Button3"), NodePath("MarginContainer/VBoxContainer/PlayerScore/Button4")]
+answer_popup = NodePath("AnswerPopup")
+timeup_popup = NodePath("TimeupPopup")
+question_popup = NodePath("QuestionPopup")
+test_quiz = ExtResource("3_o4cxn")
 question_label = NodePath("MarginContainer/VBoxContainer/Banner/MarginContainer/VBoxContainer/QuestionLabel")
 question_banner = NodePath("MarginContainer/VBoxContainer/Banner/MarginContainer/VBoxContainer/Question Banner")
 timer = NodePath("MarginContainer/VBoxContainer/Timer/Timer")
@@ -258,7 +264,6 @@ alignment = 1
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/Players"]
 layout_mode = 2
 size_flags_horizontal = 3
-toggle_mode = true
 text = "Player 1"
 icon = ExtResource("6_ax1xd")
 expand_icon = true
@@ -266,7 +271,6 @@ expand_icon = true
 [node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/Players"]
 layout_mode = 2
 size_flags_horizontal = 3
-toggle_mode = true
 text = "Player 2"
 icon = ExtResource("6_ax1xd")
 expand_icon = true
@@ -274,7 +278,6 @@ expand_icon = true
 [node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/Players"]
 layout_mode = 2
 size_flags_horizontal = 3
-toggle_mode = true
 text = "Player 3"
 icon = ExtResource("6_ax1xd")
 expand_icon = true
@@ -282,7 +285,6 @@ expand_icon = true
 [node name="Button4" type="Button" parent="MarginContainer/VBoxContainer/Players"]
 layout_mode = 2
 size_flags_horizontal = 3
-toggle_mode = true
 text = "Player 4"
 icon = ExtResource("6_ax1xd")
 expand_icon = true
@@ -325,7 +327,8 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
-[node name="AnswerPopup" type="PanelContainer" parent="."]
+[node name="AnswerPopup" type="PanelContainer" parent="." node_paths=PackedStringArray("banner", "text")]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -335,9 +338,12 @@ anchor_bottom = 0.5
 offset_left = -326.0
 offset_top = 960.0
 offset_right = 346.0
-offset_bottom = 1710.0
+offset_bottom = 1730.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("7_ax1xd")
+banner = NodePath("MarginContainer/VBoxContainer/PanelContainer/MarginContainer/TextureRect")
+text = NodePath("MarginContainer/VBoxContainer/Label")
 
 [node name="MarginContainer" type="MarginContainer" parent="AnswerPopup"]
 layout_mode = 2
@@ -362,6 +368,7 @@ theme_override_constants/margin_bottom = 20
 [node name="TextureRect" type="TextureRect" parent="AnswerPopup/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 texture = SubResource("NoiseTexture2D_mwbmr")
+expand_mode = 5
 
 [node name="Label" type="Label" parent="AnswerPopup/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -379,5 +386,184 @@ vertical_alignment = 1
 libraries = {
 &"": SubResource("AnimationLibrary_ax1xd")
 }
+
+[node name="QuestionPopup" type="PanelContainer" parent="." node_paths=PackedStringArray("banner", "text")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -326.0
+offset_top = 960.0
+offset_right = 726.14
+offset_bottom = 1710.0015
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(526.07, 375)
+script = ExtResource("7_ax1xd")
+banner = NodePath("MarginContainer/VBoxContainer/PanelContainer/MarginContainer/TextureRect")
+text = NodePath("MarginContainer/VBoxContainer/Label")
+
+[node name="MarginContainer" type="MarginContainer" parent="QuestionPopup"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="QuestionPopup/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="QuestionPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="QuestionPopup/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="TextureRect" type="TextureRect" parent="QuestionPopup/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_mwbmr")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="QuestionPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Congrats! You answered!!!!!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="QuestionPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Press Enter to Continue"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="QuestionPopup"]
+libraries = {
+&"": SubResource("AnimationLibrary_ax1xd")
+}
+
+[node name="TimeupPopup" type="PanelContainer" parent="." node_paths=PackedStringArray("banner", "text")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -326.0
+offset_top = 960.0
+offset_right = 346.0
+offset_bottom = 1729.9995
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_ax1xd")
+banner = NodePath("MarginContainer/VBoxContainer/PanelContainer/MarginContainer/TextureRect")
+text = NodePath("MarginContainer/VBoxContainer/Label")
+
+[node name="MarginContainer" type="MarginContainer" parent="TimeupPopup"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TimeupPopup/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="TimeupPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TimeupPopup/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="TextureRect" type="TextureRect" parent="TimeupPopup/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("3_txix1")
+
+[node name="Label" type="Label" parent="TimeupPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Ups! Time's up!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="TimeupPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Press Enter to Continue"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TimeupPopup"]
+libraries = {
+&"": SubResource("AnimationLibrary_ax1xd")
+}
+
+[node name="EndgamePopup" type="PanelContainer" parent="." node_paths=PackedStringArray("banner", "text")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -326.0
+offset_top = 960.0
+offset_right = 346.0
+offset_bottom = 1729.9995
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_ax1xd")
+banner = NodePath("MarginContainer/VBoxContainer/PanelContainer/MarginContainer/TextureRect")
+text = NodePath("MarginContainer/VBoxContainer/Label")
+
+[node name="MarginContainer" type="MarginContainer" parent="EndgamePopup"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EndgamePopup/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="EndgamePopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="EndgamePopup/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="TextureRect" type="TextureRect" parent="EndgamePopup/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("3_txix1")
+
+[node name="Label" type="Label" parent="EndgamePopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Thank you for playing!!!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="EndgamePopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Press Enter to Continue"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EndgamePopup"]
 
 [connection signal="timeout" from="MarginContainer/VBoxContainer/Timer/Timer" to="." method="_on_timer_timeout"]

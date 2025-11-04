@@ -18,5 +18,6 @@ script = ExtResource("1_l76rl")
 question = "Qual é a resposta D?"
 image = SubResource("GradientTexture2D_d2ka4")
 answers = Array[String](["A", "B", "C", "D"])
+feedback = Array[String](["Tá mal", "Correu mal", "Não está muito correto", "Tá certo!"])
 correctIndex = 3
 metadata/_custom_type_script = "uid://df0oxsl6tqgu"

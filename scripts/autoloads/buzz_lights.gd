@@ -8,7 +8,7 @@ extends Node
 #I hope he doesn't kill me later
 #			Edgar
 var blinking : bool
-var blink_time : float = 0.1
+var blink_time : float = 0.3
 var timer = 0
 
 var buzzHid : Hid
@@ -20,7 +20,7 @@ func _ready():
 
 func _process(delta: float) -> void:
 	if blinking:
-		for i in range(1, 4):
+		for i in range(1, 5):
 			blink(i, delta)
 
 
