@@ -1,7 +1,21 @@
-[gd_resource type="Resource" script_class="Question" load_steps=2 format=3 uid="uid://bv62bxi5yrpdh"]
+[gd_resource type="Resource" script_class="Question" load_steps=4 format=3 uid="uid://bv62bxi5yrpdh"]
 
 [ext_resource type="Script" uid="uid://df0oxsl6tqgu" path="res://scripts/question_resource.gd" id="1_6tcnr"]
 
+[sub_resource type="Gradient" id="Gradient_grfol"]
+offsets = PackedFloat32Array(0, 0.4964539, 1)
+colors = PackedColorArray(1, 0, 0, 1, 0.06146572, 0.06146572, 0.06146572, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_06bd3"]
+gradient = SubResource("Gradient_grfol")
+width = 911
+height = 512
+fill_from = Vector2(0.053418804, 0.982906)
+
 [resource]
 script = ExtResource("1_6tcnr")
+question = "Qual é a resposta A?"
+image = SubResource("GradientTexture2D_06bd3")
+answers = Array[String](["B", "A", "D", "C"])
+correctIndex = 1
 metadata/_custom_type_script = "uid://df0oxsl6tqgu"

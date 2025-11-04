@@ -1,7 +1,15 @@
-[gd_resource type="Resource" script_class="Quiz" load_steps=2 format=3 uid="uid://j1wn611o2ydt"]
+[gd_resource type="Resource" script_class="Quiz" load_steps=7 format=3 uid="uid://j1wn611o2ydt"]
 
+[ext_resource type="Texture2D" uid="uid://dltq1ynbvok8v" path="res://resources/sprites/time.png" id="1_humul"]
 [ext_resource type="Script" uid="uid://dxkhc1cvvtusq" path="res://scripts/quiz_resource.gd" id="1_wetty"]
+[ext_resource type="Script" uid="uid://df0oxsl6tqgu" path="res://scripts/question_resource.gd" id="2_mbuj2"]
+[ext_resource type="Resource" uid="uid://bv62bxi5yrpdh" path="res://resources/quizzes/test_quiz/question_1.tres" id="3_6w8ah"]
+[ext_resource type="Resource" uid="uid://b4sc3xemdagfb" path="res://resources/quizzes/test_quiz/question_2.tres" id="4_7a8nv"]
+[ext_resource type="Resource" uid="uid://dauv7qoxu61l" path="res://resources/quizzes/test_quiz/question_3.tres" id="5_ougav"]
 
 [resource]
 script = ExtResource("1_wetty")
+banner = ExtResource("1_humul")
+name = "Test Quizz"
+questions = Array[ExtResource("2_mbuj2")]([ExtResource("3_6w8ah"), ExtResource("4_7a8nv"), ExtResource("5_ougav")])
 metadata/_custom_type_script = "uid://dxkhc1cvvtusq"
