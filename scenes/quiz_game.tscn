@@ -106,7 +106,7 @@ _data = {
 &"pop_up": SubResource("Animation_mwbmr")
 }
 
-[node name="QuizGame" type="Control" node_paths=PackedStringArray("answer_buttons", "buzzer_buttons", "player_labels", "answer_popup", "timeup_popup", "question_popup", "question_label", "question_banner", "timer")]
+[node name="QuizGame" type="Control" node_paths=PackedStringArray("answer_buttons", "buzzer_buttons", "player_labels", "answer_popup", "timeup_popup", "endgame_popup", "question_popup", "question_label", "question_banner", "timer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -120,6 +120,7 @@ buzzer_buttons = [NodePath("MarginContainer/VBoxContainer/Players/Button"), Node
 player_labels = [NodePath("MarginContainer/VBoxContainer/PlayerScore/Button"), NodePath("MarginContainer/VBoxContainer/PlayerScore/Button2"), NodePath("MarginContainer/VBoxContainer/PlayerScore/Button3"), NodePath("MarginContainer/VBoxContainer/PlayerScore/Button4")]
 answer_popup = NodePath("AnswerPopup")
 timeup_popup = NodePath("TimeupPopup")
+endgame_popup = NodePath("EndgamePopup")
 question_popup = NodePath("QuestionPopup")
 test_quiz = ExtResource("3_o4cxn")
 question_label = NodePath("MarginContainer/VBoxContainer/Banner/MarginContainer/VBoxContainer/QuestionLabel")
@@ -328,7 +329,6 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
 [node name="AnswerPopup" type="PanelContainer" parent="." node_paths=PackedStringArray("banner", "text")]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -388,7 +388,6 @@ libraries = {
 }
 
 [node name="QuestionPopup" type="PanelContainer" parent="." node_paths=PackedStringArray("banner", "text")]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -451,7 +450,6 @@ libraries = {
 }
 
 [node name="TimeupPopup" type="PanelContainer" parent="." node_paths=PackedStringArray("banner", "text")]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -554,7 +552,7 @@ texture = ExtResource("3_txix1")
 
 [node name="Label" type="Label" parent="EndgamePopup/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Thank you for playing!!!"
+text = "Thanks for Playing!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -565,5 +563,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="EndgamePopup"]
+libraries = {
+&"": SubResource("AnimationLibrary_ax1xd")
+}
 
 [connection signal="timeout" from="MarginContainer/VBoxContainer/Timer/Timer" to="." method="_on_timer_timeout"]

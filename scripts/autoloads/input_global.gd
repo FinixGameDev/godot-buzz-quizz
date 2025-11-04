@@ -3,10 +3,6 @@ extends Node
 func _ready() -> void:
 	setup_buzzers()
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventJoypadButton:
-		print_debug(event.button_index)
-
 func setup_buzzers():
 	for i in range(0, 20):
 		var input_button : InputEventJoypadButton = InputEventJoypadButton.new()

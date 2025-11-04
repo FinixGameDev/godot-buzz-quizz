@@ -42,8 +42,15 @@ func _ready() -> void:
 	answer_popup.open.connect(func(): timer.stop())
 	question_popup.close.connect(func(): 
 		timer.start()
+		await get_tree().create_timer(1).timeout
 		state_switch(STATE.PLAYER_SELECT))
 	timeup_popup.close.connect(func(): state_switch(STATE.END_QUESTION))
+	endgame_popup.close.connect(func(): 
+		await get_tree().create_timer(1).timeout
+		Global.reset_score()
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn"))
+	
+	attach_buzzer_buttons()
 
 func state_switch(state : STATE):
 	match state:
@@ -67,7 +74,6 @@ func state_switch(state : STATE):
 					aID += 1
 			
 			self.state = STATE.START_QUESTION
-			attach_buzzer_buttons()
 			question_popup.popup()
 			
 		STATE.PLAYER_SELECT:
@@ -105,8 +111,7 @@ func state_switch(state : STATE):
 				state_switch(STATE.END_GAME)
 		
 		STATE.END_GAME:
-			Global.reset_score()
-			get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+			endgame_popup.popup()
 		
 		STATE.TIME_OUT:
 			timer.stop()
@@ -122,14 +127,15 @@ func attach_buzzer_buttons():
 	for button in buzzer_buttons:
 		button.shortcut = Shortcut.new()
 		var input = InputEventAction.new()
-		input.action = "player_" + str(i) + "_button_1"
+		input.action = "player_" + str(i) + "_buzzer"
 		i += 1
+		button.shortcut.events.append(input)
 
 func attach_answer_buttons(player_id : int):
 	var i = 1
 	for button in answer_buttons:
 		var input = InputEventAction.new()
-		input.action = "player_" + str(player_id) + "_button_" + str(i)
+		input.action = "player_" + str(player_id + 1) + "_button_" + str(5 - i)
 		button.shortcut.events.append(input)
 		i += 1
 
@@ -161,17 +167,20 @@ func check_answer(id : int):
 	
 	answer_popup.text.text = Global.selected_quiz.questions[qID].feedback[id]
 	
+	for i in range(1, 5):
+		BuzzLights.set_buzz_light(i, false)
+	
 	answer_popup.popup()
 
 func select_player(id: int):
 	selected_player = id
-	for i in range(1, 4):
+	for i in range(1, 5):
 		buzzer_buttons[i - 1].set_pressed_no_signal(false)
 		BuzzLights.set_buzz_light(i, false)
 		
 	buzzer_buttons[id].set_pressed_no_signal(true)
 	buzzer_buttons[id].icon = icon_pressed
-	release_buzzer_buttons()
+	BuzzLights.set_buzz_light(id + 1, true)
 	
 	state_switch(STATE.ANSWER)
 

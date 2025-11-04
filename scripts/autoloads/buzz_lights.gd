@@ -8,7 +8,7 @@ extends Node
 #I hope he doesn't kill me later
 #			Edgar
 var blinking : bool
-var blink_time : float = 0.3
+var blink_time : float = 0.75
 var timer = 0
 
 var buzzHid : Hid
@@ -23,6 +23,18 @@ func _process(delta: float) -> void:
 		for i in range(1, 5):
 			blink(i, delta)
 
+func _physics_process(delta: float) -> void:
+	var writeData : PackedByteArray
+	
+	writeData.append(0x00)
+	
+	for i in 5:
+		if lightsOn[i]:
+			writeData.append(0xFF)
+		else:
+			writeData.append(0x00)
+	buzzHid.write(writeData)
+
 
 func blink(buzzerID : int, delta: float):
 	timer += delta
@@ -34,25 +46,14 @@ func blink(buzzerID : int, delta: float):
 var lightsOn : Array[bool] = [0, 0, 0, 0, 0] 
 # Called when the node enters the scene tree for the first time.
 func set_buzz_light(buzzerID : int, toggle : bool):
-	if buzzerID <= 0 || buzzerID >=5:
+	if buzzerID <= 0 || buzzerID >= 5:
 		print_debug("BuzzerID out of bounds")
 		return
 
 	lightsOn[buzzerID] = toggle;
-	var writeData : PackedByteArray
-	
-	writeData.append(0x00)
-	
-	for i in 5:
-		if lightsOn[i]:
-			writeData.append(0xFF)
-		else:
-			writeData.append(0x00)
-	buzzHid.write(writeData)
-	
-	pass
+
 
 func _notification(what):
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST || what == NOTIFICATION_CRASH:
 		for i in range(1, 5):
 			set_buzz_light(i, false)
